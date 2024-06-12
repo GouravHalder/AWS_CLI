@@ -1,0 +1,36 @@
+List the running Instances
+
+aws ec2 describe-instances --filters Name=instance-state-name,Values=running
+
+
+Create an EC2 with User_data
+
+aws ec2 run-instances --image-id ami-052984d1804039ba8 --count 1 --instance-type t2.micro --key-name my_sec --security-group-ids launch-wizard-1 --user-data file://AMI_user_data.sh 
+
+Stop the instance
+aws ec2 stop-instances --instance-ids i-034f78596ebe128cd
+
+Create the AMI
+aws ec2 create-image --instance-id i-034f78596ebe128cd --name "MyCLIAMI"
+
+Describe the Image
+aws ec2 describe-images --image-ids ami-09a8babcab0e27b40
+
+Create an EC2 with AMI and User_data
+aws ec2 run-instances --image-id ami-09a8babcab0e27b40 --count 1 --instance-type t2.micro --key-name my_sec --security-group-ids launch-wizard-1 --user-data file://noAMI_user_data.sh
+
+Stop Instances
+aws ec2 stop-instances --instance-ids i-03d285d27a9d2db76
+
+Terminate Instances
+aws ec2 terminate-instances --instance-ids i-03d285d27a9d2db76
+
+Describe the AMI
+aws ec2 describe-images --owners self --query "Images[*].{ID:ImageId,Name:Name}"
+
+
+De-register AMI
+aws ec2 deregister-image --image-id ami-09a8babcab0e27b40
+
+Delete EBS Snapshot
+aws ec2 delete-snapshot --snapshot-id snap-0c0685bfa08b4c7c3
