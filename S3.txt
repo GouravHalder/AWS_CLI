@@ -1,0 +1,46 @@
+aws s3 ls
+Upload files - aws s3 cp file10 s3://jul042024
+Download files - aws s3 cp s3://jul042024/file10 .
+
+S3 Bucket Policies
+1.Enable Public Read by AWS Management console
+2. aws s3api put-bucket-policy --bucket jul042024 --policy file://bucket_read.json
+
+
+S3 Pre-signed URL
+
+aws s3 presign "s3://pritidhua-demo-boto3-yt-786/Capture - Copy.JPG" --expires-in 720  --region us-east-1
+
+S3 Encryption - Using SSE-S3 with the AWS CLI
+
+Step 1: Create a bucket with Versioning
+
+aws s3api create-bucket --bucket <bucket-name> --region <region> --create-bucket-configuration LocationConstraint=<region>
+
+aws s3api create-bucket --bucket sses3-gh-bucket --region eu-west-3 --create-bucket-configuration LocationConstraint=eu-west-3
+
+Step 2: Enable Versioning on the S3 Bucket
+
+aws s3api put-bucket-versioning --bucket <bucket-name> --versioning-configuration Status=Enabled
+aws s3api put-bucket-versioning --bucket sses3-gh-bucket --versioning-configuration Status=Enabled
+
+Verifying Versioning Status:
+
+aws s3api get-bucket-versioning --bucket <bucket-name>
+aws s3api get-bucket-versioning --bucket sses3-gh-bucket
+
+ENCRYPTION
+
+Upload Object using SSE-S3
+
+aws s3 cp Capture.JPG s3://sses3-gh-bucket/ --sse AES256
+
+Changing to KMS (defaukt Key)
+aws s3 cp s3://<bucket-name>/<object-key> s3://<bucket-name>/<object-key> --sse aws:kms
+aws s3 cp s3://sses3-gh-bucket/Capture.JPG s3://sses3-gh-bucket/Capture.JPG --sse aws:kms
+
+Verifying Encryption
+aws s3api head-object --bucket <bucket-name> --key <object-key>
+aws s3api head-object --bucket sses3-gh-bucket --key Capture.JPG
+
+
